@@ -19,7 +19,7 @@ The default stack that will be installed/configured:
 *Tools:*        git,
 *Misc:*         logrotation of above (logrotate), default deploy user, default dotfiles
 
-It's trivial to customize this, see *Advanced usage*.
+It's trivial to customize this, see _Advanced usage_.
 
 h2. Requirements
 
@@ -27,22 +27,20 @@ h2. Requirements
 
 h2. Usage
 
-Installation procedure.
-
-h3. Clone the stack into your project
+h3. 1. Clone the stack into your project
 
 <pre>
 $ cd my_app
 $ git clone git://github.com/grimen/sprinkle-stack.git config/stack
 </pre>
 
-h3. Install dependencies
+h3. 2. Install dependencies
 
 <pre>
 $ gem install sprinkle
 </pre>
 
-h3. Configure
+h3. 3. Configure
 
 *Capistrano-way:*
 
@@ -56,7 +54,7 @@ role :app, "example.com"  # ...or IP
 
 Nothing, see below.
 
-h3. Setup server!
+h3. 4. Setup server!
 
 *Capistrano-way:*
 
@@ -72,13 +70,13 @@ $ sprinkle -c -s config/stack/setup.rb HOST
 
 ...where @HOST@ is the remote server's domain or IP.
 
-h4. Relax
+h4. 5. Relax
 
 You will be queried a few options in the process, but other than that you are done.
 
 *Optional:* "DJ Tïesto - Sparkles":http://open.spotify.com/track/2ET2q3HVLlx2DSIdyLn6xP
 
-h2. Advanced
+h2. Advanced usage
 
 TODO
 
