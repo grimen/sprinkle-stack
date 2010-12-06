@@ -1,6 +1,8 @@
-h1. sprinkle-stack *alpha*
+h1. sprinkle-stack *** alpha ***
 
 _A sweet Rails stack - using *"Sprinkle":http://github.com/crafterm/sprinkle*._
+
+*Warning:* Don't try this at home yet, still work-in-progress (~90%).
 
 h2. Default stack
 
@@ -9,6 +11,7 @@ The default stack that will be installed/configured:
 *Lang:*         Ruby/RVM (REE + 1.9.2 + Rubygems + Bundler)
 *App-server:*   Passenger
 *Web-server:*   Nginx
+*Mail-server:*  Postfix
 *Database:*     PostgreSQL
 *Monitoring:*   Monit
 *HTTP-proxy:*   Varnish
@@ -16,7 +19,7 @@ The default stack that will be installed/configured:
 *Security:*     Fail2ban, IP-tables, SSH-settings
 *SCM:*          Git
 *Shell:*        ZSH (oh-my-zsh)
-*Tools:*        git,
+*Tools:*        ntp, screen, curl, vim, htop, imagemagick
 *Misc:*         logrotation of above (logrotate), default deploy user, default dotfiles
 
 It's trivial to customize this, see _Advanced usage_.

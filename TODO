@@ -12,6 +12,8 @@
     - http://www.rndguy.ca/2010/02/24/fully-automated-ubuntu-server-setups-using-preseed/
 * variable everywhere: deployer, group, deploy_to, install-prefix (e.g. '/usr/local'), ...
 * make use of ERB in templates (config value interpolation)
+* zsh: use transfer instead of push_text
+* if required config values are not set (such as host, in say deploy.rb) - ask for a value before continue
 
 == MAYBE
 
@@ -29,4 +31,4 @@
     - http://www.engineyard.com/blog/2010/virtualize-this-instant-rails-in-a-virtual-box/
 * appserver-packages: unicorn, thin, node.js
 * search-packages: solr, thinking_spinx
-* cms-packages: worpress + php
+* cms-packages: wordpress + php
