@@ -70,7 +70,7 @@ $ sprinkle -c -s config/stack/setup.rb HOST
 
 ...where @HOST@ is the remote server's domain or IP.
 
-h4. 5. Relax
+h3. 5. Relax
 
 You will be queried a few options in the process, but other than that you are done.
 
