@@ -1,0 +1,9 @@
+# sprinkled: monitrc v1
+
+set daemon 60 with start delay 60   # 1 min monitoring cycle
+set logfile syslog facility log_daemon
+set mailserver smtp.gmail.com port 587
+    username "example@googleappsdomain.com" password "example"
+    using tlsv1
+    with timeout 30 seconds
+set alert you@example.com

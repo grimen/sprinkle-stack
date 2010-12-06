@@ -1,0 +1,3 @@
+# sprinkled: .rvmrc v1
+
+set 'export rvm_pretty_print_flag=1'

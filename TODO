@@ -1,0 +1,32 @@
+== TODO
+
+* rvm: implement all procedures specified in:
+    - http://rvm.beginrescueend.com/integration/passenger/
+    - http://blog.ninjahideout.com/posts/a-guide-to-a-nginx-passenger-and-rvm-server
+    - http://blog.ninjahideout.com/posts/the-path-to-better-rvm-and-passenger-integration
+* monit: finalize
+* postgres: roles, root password, append iptables-rule
+    - http://articles.slicehost.com/postgresql
+* mysql: roles, root password, config, append iptables-rule
+    - http://articles.slicehost.com/mysql
+    - http://www.rndguy.ca/2010/02/24/fully-automated-ubuntu-server-setups-using-preseed/
+* variable everywhere: deployer, group, deploy_to, install-prefix (e.g. '/usr/local'), ...
+* make use of ERB in templates (config value interpolation)
+
+== MAYBE
+
+* backup all exisiting files by renaming with suffix ".original"
+* SSL
+    - http://articles.slicehost.com/2010/1/11/managing-ssl-certificates-1
+    - http://articles.slicehost.com/2010/1/11/managing-ssl-certificates-2
+* would be very cool/useful: log changes to file system to make it possible to undo/redo entire stack if things goes wrong (migrations kind of)
+    Example:
+      /sprinkle/                        # sprinkle root
+      /sprinkle/setup.log               # sprinkle log containing all file modifications (example: ALTERED /etc/sudoers, NEW /etc/hello, ...)
+      /sprinkle/backup/**/*.original    # where original (altered/removed) files are backed up
+* look into vagrant, maybe to provide localhost tryout/testing:
+    - http://vagrantup.com
+    - http://www.engineyard.com/blog/2010/virtualize-this-instant-rails-in-a-virtual-box/
+* appserver-packages: unicorn, thin, node.js
+* search-packages: solr, thinking_spinx
+* cms-packages: worpress + php

@@ -1,0 +1,4 @@
+# sprinkled: sudo.rules v1
+
+# Deployer group.
+%deployer ALL=(ALL) PASSWD:ALL

@@ -1,0 +1,96 @@
+h1. sprinkle-stack *alpha*
+
+_A sweet Rails stack - using *"Sprinkle":http://github.com/crafterm/sprinkle*._
+
+h2. Default stack
+
+The default stack that will be installed/configured:
+
+*Lang:*         Ruby/RVM (REE + 1.9.2 + Rubygems + Bundler)
+*App-server:*   Passenger
+*Web-server:*   Nginx
+*Database:*     PostgreSQL
+*Monitoring:*   Monit
+*HTTP-proxy:*   Varnish
+*Cache:*        Memcached
+*Security:*     Fail2ban, IP-tables, SSH-settings
+*SCM:*          Git
+*Shell:*        ZSH (oh-my-zsh)
+*Tools:*        git,
+*Misc:*         logrotation of above (logrotate), default deploy user, default dotfiles
+
+It's trivial to customize this, see *Advanced usage*.
+
+h2. Requirements
+
+* *Debian*-compatible systems should work, even though it has yet only been tested with *Ubuntu 10.10*.
+
+h2. Usage
+
+Installation procedure.
+
+h3. Clone the stack into your project
+
+<pre>
+$ cd my_app
+$ git clone git://github.com/grimen/sprinkle-stack.git config/stack
+</pre>
+
+h3. Install dependencies
+
+<pre>
+$ gem install sprinkle
+</pre>
+
+h3. Configure
+
+*Capistrano-way:*
+
+Ensure you have specified your server host in @config/deploy.rb@:
+
+<pre>
+role :app, "example.com"  # ...or IP
+</pre>
+
+*Vanilla-way:*
+
+Nothing, see below.
+
+h3. Setup server!
+
+*Capistrano-way:*
+
+<pre>
+$ sprinkle -c -s config/stack/setup.rb
+</pre>
+
+*Vanilla-way:*
+
+<pre>
+$ sprinkle -c -s config/stack/setup.rb HOST
+</pre>
+
+...where @HOST@ is the remote server's domain or IP.
+
+h4. Relax
+
+You will be queried a few options in the process, but other than that you are done.
+
+*Optional:* "DJ Tïesto - Sparkles":http://open.spotify.com/track/2ET2q3HVLlx2DSIdyLn6xP
+
+h2. Advanced
+
+TODO
+
+h2. References
+
+* "Sprinkle":http://sr3d.github.com/GithubFinder/?user_id=crafterm&repo=sprinkle&branch=master
+
+h2. TODO
+
+See "TODO":http://github.com/grimen/sprinkle-stack/blob/master/TODO
+
+h2. License
+
+Released under the MIT license.
+Copyright (c) "Jonas Grimfelt":http://github.com/grimen
