@@ -34,8 +34,23 @@ package :fail2ban_config do
   end
 end
 
-package :fail2ban_restart do
+package :fail2ban_autostart do
+  requires :fail2ban_core
+  
   noop do
-    pre :install, "/etc/init.d/fail2ban restart"
+    pre :install, '/usr/sbin/update-rc.d fail2ban default'
+  end
+  
+  verify do
+  end
+end
+
+%w[start stop restart reload].each do |command|
+  package :"fail2ban_#{command}" do
+    requires :fail2ban_core
+
+    noop do
+      pre :install, "/etc/init.d/fail2ban #{command}"
+    end
   end
 end

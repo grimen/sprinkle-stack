@@ -54,15 +54,11 @@ package :sshd_config do
   end
 end
 
-package :ssh_reload do
-  noop do
-    pre :install, "/etc/init.d/ssh reload"
-  end
-end
-
-package :ssh_restart do
-  noop do
-    pre :install, "/etc/init.d/ssh restart"
+%w[start stop restart reload].each do |command|
+  package :"ssh_#{command}" do
+    noop do
+      pre :install, "/etc/init.d/ssh #{command}"
+    end
   end
 end
 

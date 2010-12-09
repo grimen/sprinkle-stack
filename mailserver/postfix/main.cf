@@ -2,7 +2,6 @@
 
 # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
-
 # Debian specific:  Specifying a file name will cause the first
 # line of that file to be used as the name.  The Debian default
 # is /etc/mailname.
@@ -33,7 +32,7 @@ myhostname = mail.local
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 myorigin = /etc/mailname
-mydestination = domU-12-31-39-06-30-AB.compute-1.internal, localhost.compute-1.internal, , localhost
+mydestination = $myhostname, localhost.$mydomain, localhost
 relayhost =
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 mailbox_size_limit = 0

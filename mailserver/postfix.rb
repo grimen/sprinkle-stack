@@ -6,26 +6,39 @@ package :postfix, :provides => :mailserver do
 end
 
 package :postfix_core do
+  preseed_file = '/tmp/postfix.preseed'
+  preseed_template = File.join(File.dirname(__FILE__), 'postfix', 'postfix.preseed')
+  
+  transfer preseed_template, preseed_file
+  
+  verify do
+    has_file preseed_file
+    file_contains preseed_file, `head -n 1 #{preseed_file}`
+  end
+  
   apt 'postfix' do
-    # post :install, "chown deployer:deployer -R /var/log/mail.log"
-    # post :install, "chown deployer:deployer -R /var/log/mail.info"
-    # post :install, "chown deployer:deployer -R /var/log/mail.warn"
-    # post :install, "chown deployer:deployer -R /var/log/mail.err"
+    pre :install, "debconf-set-selections #{preseed_file}"
   end
 
   verify do
     has_executable 'postfix'
+    has_file '/etc/init.d/postfix'
   end
 end
 
-package :postfix_autostart do
-  requires :postfix_core
+package :postfix_iptable_rules do
+  requires :iptables, :postfix_core
   
-  noop do
-    pre :install, '/usr/sbin/update-rc.d postfix default'
+  iptables_file = '/etc/iptables.rules'
+  iptables_rules_template = File.join(File.dirname(__FILE__), 'postfix', 'postfix.iptables.rules')
+  
+  push_text File.read(iptables_rules_template), iptables_file do
+    # Reload IP-tables.
+    post :install, "/sbin/iptables-restore < #{config_file} && /etc/init.d/ssh reload"
   end
   
   verify do
+    file_contains iptables_file
   end
 end
 
@@ -48,18 +61,24 @@ package :postfix_config do
   end
 end
 
-package :postfix_reload do
+package :postfix_autostart do
   requires :postfix_core
   
   noop do
-    pre :install, '/etc/init.d/postfix reload'
+    pre :install, '/usr/sbin/update-rc.d postfix default'
+  end
+  
+  verify do
   end
 end
 
-package :postfix_restart do
-  requires :postfix_core
-  
-  noop do
-    pre :install, '/etc/init.d/postfix restart'
+%w[start stop restart reload].each do |command|
+  package :"postfix_#{command}" do
+    requires :postfix_core
+
+    noop do
+      pre :install, "/etc/init.d/postfix #{command}"
+    end
   end
 end
+

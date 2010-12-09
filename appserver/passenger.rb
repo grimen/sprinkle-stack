@@ -1,11 +1,11 @@
 
 package :passenger, :provides => :appserver do
   description 'Phusion Passenger'
-  version '3.0.0'
+  version '3.0.1'
   
   requires :ruby
   
-  binaries = %w[passenger-config passenger-install-nginx-module passenger-install-apache2-module passenger-make-enterprisey passenger-memory-stats passenger-spawn-server passenger-status passenger-stress-test]
+  binaries = %w[passenger-config passenger-install-nginx-module passenger-install-apache2-module passenger-make-enterprisey passenger-memory-stats passenger-spawn-server passenger-status]
   
   gem 'passenger', :version => version
 

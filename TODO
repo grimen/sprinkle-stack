@@ -1,9 +1,8 @@
 == TODO
 
-* rvm: implement all procedures specified in:
-    - http://rvm.beginrescueend.com/integration/passenger/
-    - http://blog.ninjahideout.com/posts/a-guide-to-a-nginx-passenger-and-rvm-server
-    - http://blog.ninjahideout.com/posts/the-path-to-better-rvm-and-passenger-integration
+-- HIGH-PRIO
+
+* ruby/rvm + zsh: right now the init script is only added to .bashrc - fix this
 * monit: finalize
 * postgres: roles, root password, append iptables-rule
     - http://articles.slicehost.com/postgresql
@@ -12,11 +11,26 @@
     - http://www.rndguy.ca/2010/02/24/fully-automated-ubuntu-server-setups-using-preseed/
 * variable everywhere: deployer, group, deploy_to, install-prefix (e.g. '/usr/local'), ...
 * make use of ERB in templates (config value interpolation)
-* zsh: use transfer instead of push_text
 * if required config values are not set (such as host, in say deploy.rb) - ask for a value before continue
+* secure SSH:
+    - /etc/ssh/sshd_config
+      PermitRootLogin yes => PermitRootLogin no
+      PasswordAuthentication yes => PasswordAuthentication no
 
-== MAYBE
+      (...and restart SSH service)
+* firewall: Consider ufw ("uncomplicated firewall") - because iptable rules is usually overkill
+    - http://www.ubuntugeek.com/ufw-uncomplicated-firewall-for-ubuntu-hardy.html
 
+-- LOWER-PRIO
+
+* consider using one user per site, i.e. "/home/example.com/app/..."
+* change "ubuntu" user to deployer vs. add files for this user as well? (Read up)
+* document-databases: mongodb
+* keyvalue-stores:
+
+-- MAYBE
+
+* shell/bash: Consider: https://github.com/revans/bash-it
 * backup all exisiting files by renaming with suffix ".original"
 * SSL
     - http://articles.slicehost.com/2010/1/11/managing-ssl-certificates-1

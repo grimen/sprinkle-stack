@@ -1,5 +1,5 @@
 
-package :memcached, :provides => :cachestore do
+package :memcached, :provides => :memorystore do
   description "Memcached"
 
   requires :memcached_core, :memcached_config, :memcached_logrotate, :memchached_restart
@@ -8,7 +8,7 @@ end
 package :memcached_core do
   apt 'memcached' do
     pre :install, "mkdir -p /var/log/memcached"
-    post :install, "chown deployer:deployer -R /var/log/memcached"
+    post :install, "chown deployer:deployer -R /var/log/memcached.log"
   end
 
   verify do
@@ -49,10 +49,23 @@ package :memchached_logrotate do
   end
 end
 
-package :memchached_restart do
+package :memcached_autostart do
   requires :memcached_core
   
   noop do
-    pre :install, "/etc/init.d/memcached restart"
+    pre :install, '/usr/sbin/update-rc.d memcached default'
+  end
+  
+  verify do
+  end
+end
+
+%w[start stop restart reload].each do |command|
+  package :"memcached_#{command}" do
+    requires :memcached_core
+
+    noop do
+      pre :install, "/etc/init.d/memcached #{command}"
+    end
   end
 end

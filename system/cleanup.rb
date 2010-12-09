@@ -11,6 +11,6 @@ end
 
 package :update_db do
   noop do
-    pre :install, 'update_db'
+    pre :install, 'updatedb'
   end
 end

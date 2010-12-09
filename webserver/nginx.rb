@@ -8,10 +8,15 @@ end
 package :nginx_passenger do
   description "Passenger Nginx"
 
-  requires :passenger
+  requires :passenger, :nginx_dependencies
 
+  nginx_sbin_path = '/usr/local/sbin'
+  nginx_flags = "--sbin-path=#{nginx_sbin_path}"
+  nginx_prefix = File.join(@options[:prefix], 'nginx')
+  passenger_nginx_flags = %{--auto --auto-download --prefix=#{@options[:prefix]}/nginx --extra-configure-flags="#{nginx_flags}"}
+  
   noop do
-    post :install, "passenger-install-nginx-module --auto --auto-download --prefix=/usr/local/nginx --sbin-path=/usr/local/sbin"
+    post :install, "rvmsudo passenger-install-nginx-module #{passenger_nginx_flags}"
     post :install, "mkdir -p /var/log/nginx && chown deployer:deployer -R /var/log/nginx"
   end
 
@@ -23,10 +28,14 @@ package :nginx_passenger do
   end
 
   verify do
-    has_executable '/usr/local/sbin/nginx'
+    has_executable nginx_sbin_path
     has_file '/etc/init.d/nginx'
     has_process 'nginx'
   end
+end
+
+package :nginx_dependencies do
+  apt 'libcurl4-openssl-dev'
 end
 
 package :nginx_autostart do
@@ -43,16 +52,20 @@ end
 package :nginx_iptable_rules do
   requires :nginx_core
   
-  # TODO
+  config_file = '/etc/iptables.rules'
+  config_template = File.join(File.dirname(__FILE__), 'nginx', 'nginx.iptables.rules')
+  
+  # TODO: Append iptables.rules
   
   verify do
+    file_contains config_file, `cat #{config_template}`
   end
 end
 
 package :nginx_config do
   requires :nginx_passenger
 
-  config_file = '/usr/local/nginx/conf/nginx.conf'
+  config_file = File.join(@options[:prefix], '/nginx/conf/nginx.conf')
   config_template_file = File.join(File.dirname(__FILE__), 'nginx', 'nginx.conf')
 
   transfer config_template_file, config_file, :render => false do
@@ -98,10 +111,24 @@ package :nginx_logrotate do
   end
 end
 
-package :nginx_restart do
-  requires :nginx_passenger
+package :nginx_autostart do
+  requires :passenger_nginx
   
   noop do
-    pre :install, "/etc/init.d/nginx restart"
+    pre :install, '/usr/sbin/update-rc.d nginx default'
+  end
+  
+  verify do
   end
 end
+
+%w[start stop restart reload].each do |command|
+  package :"nginx_#{command}" do
+    requires :nginx_passenger
+
+    noop do
+      pre :install, "/etc/init.d/nginx #{command}"
+    end
+  end
+end
+

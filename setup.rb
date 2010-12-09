@@ -1,10 +1,4 @@
-# Depend on a specific version of sprinkle.
-begin
-  gem 'sprinkle', ">= 0.2.3"
-rescue Gem::LoadError
-  puts "sprinkle >= 0.2.3 required.\n Run: `gem install sprinkle`"
-  exit
-end
+require 'base'
 
 # Require the stack base.
 require 'system/tools'
@@ -30,22 +24,22 @@ policy :stack, :roles => :app do
   requires :tools
   requires :deployer
   requires :ssh
-  # TODO: requires :ssl
   requires :firewall
   requires :dotfiles
   
   requires :shell                   # ZSH
   requires :scm                     # Git
-  requires :ruby                    # RVM: REE + 1.9.2
-  requires :bundler                 # Bundler
+  requires :ruby                    # RVM: REE + 1.9.2 + Bundler
   requires :appserver               # Passenger
   requires :webserver               # Nginx
   requires :mailserver              # Postfix
   requires :database                # MySQL or Postgres, also installs rubygems for each
+  requires :memorystore             # Memcached
   requires :http_proxy              # Varnish
   # requires :process_monitoring      # Monit
   # requires :bruteforce_protection   # Fail2ban
-  requires :cachestore              # Memcached
+  
+  # TODO: requires :ssl
   
   requires :logrotate
   
@@ -77,6 +71,8 @@ deployment do
 
     # Use specified host/IP if any.
     role :app, ARGV.first if ARGV.first.present?
+    
+    default_run_options[:pty] = true
   end
 
   # Source based package installer defaults.

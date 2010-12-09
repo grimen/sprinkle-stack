@@ -14,6 +14,8 @@ package :varnish_core do
 
   verify do
     has_executable '/usr/sbin/varnishd'
+    
+    has_file '/etc/logrotate.d/varnish'
   end
 end
 
@@ -25,7 +27,7 @@ package :varnish_config do
   requires :varnish_core
   
   config_file = '/etc/default/varnish'
-  config_template = File.join(File.dirname(__FILE__), 'varnish', 'varnish.conf')
+  config_template = File.join(File.dirname(__FILE__), 'varnish', 'varnish.default.conf')
 
   transfer config_template, config_file, :render => false do
     pre :install, "touch #{config_file} && rm #{config_file} && touch #{config_file}"
@@ -36,7 +38,6 @@ package :varnish_config do
     file_contains config_file, `head -n 1 #{config_template}`
   end
 end
-
 
 package :varnish_vcl do
   requires :varnish_core
@@ -54,10 +55,23 @@ package :varnish_vcl do
   end
 end
 
-package :varnished_restart do
+package :varnish_autostart do
   requires :varnish_core
   
   noop do
-    pre :install, "/etc/init.d/varnish restart"
+    pre :install, '/usr/sbin/update-rc.d varnish default'
+  end
+  
+  verify do
+  end
+end
+
+%w[start stop restart reload].each do |command|
+  package :"varnish_#{command}" do
+    requires :varnish_core
+
+    noop do
+      pre :install, "/etc/init.d/varnish #{command}"
+    end
   end
 end

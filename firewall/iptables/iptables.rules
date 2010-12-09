@@ -24,10 +24,8 @@
 -A INPUT -p tcp --dport 443 -j ACCEPT
 
 #  Allows SSH connections
-#
-# THE -dport NUMBER IS THE SAME ONE YOU SET UP IN THE SSHD_CONFIG FILE
-#
--A INPUT -p tcp -m state --state NEW --dport 22 -j ACCEPT
+-A INPUT -p tcp -m tcp --dport <%= ssh_port %> -m state --state NEW -m recent --set
+-A INPUT -p tcp -m tcp --dport <%= ssh_port %> -m state --state NEW -m recent --update --seconds 60 --hitcount 4 -j DROP
 
 # Allow ping
 -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT

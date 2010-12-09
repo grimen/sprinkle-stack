@@ -18,7 +18,7 @@ end
     dotfile_for_root = dotfile % '/root'
     transfer dotfile_template, config_file_for_root, :render => false
     
-    dotfile_for_deployer = dotfile % '/home/deployer'
+    dotfile_for_deployer = dotfile % "/home/#{deployer}"
     transfer dotfile_template, config_file_for_user, :render => false do
       post :install, "chown deployer:deployer #{config_file_for_user}"
     end

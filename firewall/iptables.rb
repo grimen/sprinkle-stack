@@ -7,11 +7,11 @@ end
 
 package :iptable_rules do
   config_file = '/etc/iptables.rules'
-  config_template = File.read(File.join(File.dirname(__FILE__), 'iptables', 'app.logrotate.conf'))
+  config_template = File.read(File.join(File.dirname(__FILE__), 'iptables', 'iptables.rules'))
 
   transfer config_template, config_file, :render => false do
     pre :install, "touch #{config_file} && rm #{config_file} && touch #{config_file}"
-    post :install, "/sbin/iptables-restore < /etc/iptables.up.rules"
+    post :install, "/sbin/iptables-restore < #{config_file}"
     post :install, "/etc/init.d/ssh reload"
   end
   
@@ -34,5 +34,15 @@ package :iptable_rules_autoload do
   verify do
     has_file config_file
     file_contains config_file, `head -n 1 #{config_template}`
+  end
+end
+
+%w[start stop restart reload].each do |command|
+  package :"ssh_#{command}" do
+    requires :ufw_core
+
+    noop do
+      pre :install, "/etc/init.d/ufw #{command}"
+    end
   end
 end

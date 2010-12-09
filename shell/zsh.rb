@@ -1,24 +1,60 @@
 package :zsh, :provides => :shell do
   description 'ZSH Shell (oh-my-zsh)'
   
-  config_file = "/home/deployer/.zsh"
+  requires :zsh_core
+  optional :zsh_oh_my_zsh
+end
+
+package :zsh_core do
+  description 'ZSH Shell'
   
-  install_file = "/home/deployer/zsh-setup"
-  install_file_text = File.read(File.join(File.dirname(__FILE__), 'zsh', 'setup'))
-  
-  push_text install_file_text, install_file do
-    # Allocate install file.
-    pre :install, "touch #{install_file}"
-    
-    # Install ZSH framework "oh-my-zsh".
-    post :install, "chmod +x #{install_file} && sh #{install_file}"
-    post :install, "rm #{install_file}"
-    
+  apt 'zsh' do
     # Set ZSH as default shell.
     post :install, "chsh -s /bin/zsh"
   end
   
   verify do
     file_contains config_file, 'export ZSH=$HOME/.oh-my-zsh'
+  end
+end
+
+package :zsh_oh_my_zsh do
+  description 'oh-my-zsh - ZSH framework'
+  
+  config_file = "/home/#{deployer}/.zsh"
+  
+  config_file = {:root => '/root/.gemrc', :skel => '/etc/skel/.gemrc', :deployer => "/home/#{deployer}/.gemrc"}
+  gemrc_template = File.join(File.dirname(__FILE__), 'ruby', '.gemrc')
+  
+  install_files = {:root => '/root/.oh-my-zsh-installer', :skel => '/etc/skel/.oh-my-zsh-installer', :deployer => "/home/#{deployer}/.oh-my-zsh-installer"}
+  install_template = File.join(File.dirname(__FILE__), 'zsh', 'oh-my-zsh-installer')
+  
+  install_files.each do |install_file|
+    transfer install_template, install_file do
+      # Allocate install file.
+      pre :install, "touch #{install_file}"
+
+      # Install ZSH framework "oh-my-zsh".
+      post :install, "chmod +x #{install_file} && sh #{install_file}"
+      # post :install, "rm #{install_file}"
+    end
+
+    verify do
+      file_contains config_file, 'export ZSH=$HOME/.oh-my-zsh'
+    end
+  end
+end
+
+package :zsh_set_as_default_shell do
+  description 'Set ZSH as default shell'
+  
+  noop 'zsh' do
+    # Set ZSH as default shell.
+    post :install, "chsh -s /bin/zsh"
+    post :install, "echo $SHELL > /tmp/.shell_status"
+  end
+  
+  verify do
+    file_contains '/tmp/.shell_status', '/bin/zsh'
   end
 end

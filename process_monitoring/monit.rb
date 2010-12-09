@@ -10,6 +10,9 @@ package :monit_core do
 
   verify do
     has_executable 'monit'
+    
+    has_file '/etc/init.d/monit'
+    has_file '/etc/logrotate.d/monit'
   end
 end
 
@@ -23,21 +26,33 @@ package :monit_config do
     pre :install, "touch #{config_file} && rm #{config_file} && touch #{config_file}"
     
     # Allow monit startup.
-    post :install, "echo >/etc/default/monit 'startup=1'"
+    post :install, "echo > /etc/default/monit 'startup=1'"
   end
-
-  # TODO
+  
   verify do
     has_file config_file
     file_contains config_file, `head -n 1 #{config_template}`
   end
 end
 
-package :monit_restart do
+package :monit_autostart do
   requires :monit_core
   
   noop do
-    pre :install, "/etc/init.d/monit restart"
+    pre :install, '/usr/sbin/update-rc.d monit default'
+  end
+  
+  verify do
+  end
+end
+
+%w[start stop restart reload].each do |command|
+  package :"monit_#{command}" do
+    requires :monit_core
+
+    noop do
+      pre :install, "/etc/init.d/monit #{command}"
+    end
   end
 end
 
