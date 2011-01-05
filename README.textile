@@ -12,11 +12,11 @@ The default stack that will be installed/configured:
 *App-server:*   Passenger
 *Web-server:*   Nginx
 *Mail-server:*  Postfix
-*Database:*     PostgreSQL
+*Database:*     PostgreSQL (optional: MySQL, SQLite3)
 *Monitoring:*   Monit
 *HTTP-proxy:*   Varnish
 *Cache:*        Memcached
-*Security:*     Fail2ban, IP-tables, SSH-settings
+*Security:*     Fail2ban, IP-tables/ufw, SSH-settings
 *SCM:*          Git
 *Shell:*        ZSH (oh-my-zsh)
 *Tools:*        ntp, screen, curl, vim, htop, imagemagick
@@ -86,6 +86,7 @@ TODO
 h2. References
 
 * "Sprinkle":http://sr3d.github.com/GithubFinder/?user_id=crafterm&repo=sprinkle&branch=master
+* "Amazon EC2":http://flurdy.com/docs/ec2/ubuntu/
 
 h2. TODO
 

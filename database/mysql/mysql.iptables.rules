@@ -1,3 +1,0 @@
-# Allows connections to MySQL
--A OUTPUT -o eth0 -p tcp --sport <%= db_port %> -j ACCEPT
--A INPUT -i eth0 -p tcp --dport <%= db_port %> -j ACCEPT

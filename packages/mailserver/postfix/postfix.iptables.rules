@@ -1,0 +1,4 @@
+-I INPUT -p tcp --dport <%= smtp_port %> -m state --state NEW,ESTABLISHED -j ACCEPT
+-I OUTPUT -p tcp --sport <%= smtp_port %> -m state --state NEW,ESTABLISHED -j ACCEPT
+
+COMMIT

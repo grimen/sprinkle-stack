@@ -1,0 +1,7 @@
+# sprinkled: monit.rc.varnish v1
+
+check process varnish with pidfile /var/run/varnishd.pid
+start program = "/etc/init.d/varnish start"
+stop  program = "/etc/init.d/varnish stop"
+if failed host 127.0.0.1 port 80 for 2 cycles then restart
+if totalmemory is greater than 60% for 2 cycles then alert

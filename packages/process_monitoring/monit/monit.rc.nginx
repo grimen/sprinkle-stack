@@ -1,0 +1,7 @@
+# sprinkled: monit.rc.nginx v1
+
+check process nginx with pidfile /var/run/nginx.pid
+start program = "/etc/init.d/nginx start"
+stop  program = "/etc/init.d/nginx stop"
+if failed host 127.0.0.1 port 80 for 2 cycles then restart
+if totalmemory is greater than 60% for 2 cycles then alert

@@ -1,0 +1,5 @@
+# Allows HTTP and HTTPS connections from anywhere (the normal ports for websites)
+-A INPUT -p tcp --dport <%= http_port %> -j ACCEPT
+-A INPUT -p tcp --dport <%= https_port %> -j ACCEPT
+
+COMMIT

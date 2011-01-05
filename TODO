@@ -2,39 +2,31 @@
 
 -- HIGH-PRIO
 
-* ruby/rvm + zsh: right now the init script is only added to .bashrc - fix this
+* test on new image
+* change "ubuntu" user to deployer vs. add files for this user as well? (Read up)
+* nginx.conf: Use proper Ruby version?
 * monit: finalize
-* postgres: roles, root password, append iptables-rule
-    - http://articles.slicehost.com/postgresql
-* mysql: roles, root password, config, append iptables-rule
-    - http://articles.slicehost.com/mysql
-    - http://www.rndguy.ca/2010/02/24/fully-automated-ubuntu-server-setups-using-preseed/
-* variable everywhere: deployer, group, deploy_to, install-prefix (e.g. '/usr/local'), ...
-* make use of ERB in templates (config value interpolation)
-* if required config values are not set (such as host, in say deploy.rb) - ask for a value before continue
+* ufw: finalize
 * secure SSH:
     - /etc/ssh/sshd_config
       PermitRootLogin yes => PermitRootLogin no
       PasswordAuthentication yes => PasswordAuthentication no
-
       (...and restart SSH service)
-* firewall: Consider ufw ("uncomplicated firewall") - because iptable rules is usually overkill
-    - http://www.ubuntugeek.com/ufw-uncomplicated-firewall-for-ubuntu-hardy.html
 
 -- LOWER-PRIO
 
+* EC2-tools package: https://help.ubuntu.com/community/EC2StartersGuide
+* optional: setup should ask for PEM-file (requires Sprinkle patch it seems...)
+    - http://www.denofubiquity.com/ruby/bootstrapping-a-deploy-user-with-capistrano-on-ec2/
 * consider using one user per site, i.e. "/home/example.com/app/..."
-* change "ubuntu" user to deployer vs. add files for this user as well? (Read up)
-* document-databases: mongodb
-* keyvalue-stores:
+* shell/bash: Consider: https://github.com/revans/bash-it
 
 -- MAYBE
 
-* shell/bash: Consider: https://github.com/revans/bash-it
-* backup all exisiting files by renaming with suffix ".original"
 * SSL
     - http://articles.slicehost.com/2010/1/11/managing-ssl-certificates-1
     - http://articles.slicehost.com/2010/1/11/managing-ssl-certificates-2
+* backup all existing files by renaming with suffix ".original"
 * would be very cool/useful: log changes to file system to make it possible to undo/redo entire stack if things goes wrong (migrations kind of)
     Example:
       /sprinkle/                        # sprinkle root
@@ -44,5 +36,6 @@
     - http://vagrantup.com
     - http://www.engineyard.com/blog/2010/virtualize-this-instant-rails-in-a-virtual-box/
 * appserver-packages: unicorn, thin, node.js
+* document-databases: mongodb
 * search-packages: solr, thinking_spinx
 * cms-packages: wordpress + php
