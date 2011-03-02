@@ -1,4 +1,3 @@
-
 package :ruby, :provides => :ruby do
   description "Ruby (RVM)"
   
@@ -49,7 +48,7 @@ package :rvm do
   
   apt 'ruby-full' do
     # Install RVM.
-    post :install, 'bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )'
+    post :install, 'bash < <( curl -L https://github.com/wayneeseguin/rvm/raw/master/contrib/install-system-wide )'
     post :install, 'rvm reload'
     
     # Add deployer to rvm group (root added already by RVM installer).
