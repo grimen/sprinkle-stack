@@ -56,7 +56,7 @@ deployment do
     
     # Ensure defined - if not, then ask.
     vars.keys.each do |var|
-      unless (value = send(var)).present?
+      unless defined?(var) || (value = send(var)).present?
         print "#{vars[var][:label]} (default: #{vars[var][:default]}): "
         value = gets || vars[var][:label]
         set var, value
