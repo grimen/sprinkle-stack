@@ -47,19 +47,24 @@ deployment do
     ssh_options[:forward_agent] = true
     default_run_options[:pty] = true
     
+    # Smart default variables, uses role :app for Server IP if defined in deploy.rb
     vars = {
-      :app      => {:label => ":app, host domain/IP",     :default => (roles[:app].blank?) ? nil : roles[:app].servers.first },
-      :deployer => {:label => ":deployer, deploy-user",   :default => 'deployer'},
-      :user     => {:label => ":root, setup-user",        :default => 'root'},
-      :group    => {:label => ":group, deployers-group",  :default => 'deployer'}
+      :app      => {:label => "Server Hostname/IP", :default => (roles[:app].blank?) ? nil : roles[:app].servers.first },
+      :deployer => {:label => "Deploy User",    :default => 'deployer'},
+      :group    => {:label => "Deployer Group", :default => 'deployer'},
+      :user     => {:label => "Setup User",     :default => 'root'}
     }
+    
+    puts "\n⎈ ⎈ ⎈ SprinkleStack Interactive Configuration ⎈ ⎈ ⎈\n\n"
     
     # Ensure defined - if not, then ask.
     vars.keys.each do |var|
       unless respond_to_with_variables?(var) && (value = send(var)).present?
-        print "#{vars[var][:label]} [#{vars[var][:default]}]: "
-        value = vars[var][:default] if gets.blank?
-        set var, value
+        begin
+          print "#{vars[var][:label]} [#{vars[var][:default]}]: "
+          value = vars[var][:default] if gets.blank?
+          set var, value
+        end while value.blank?
       end
     end
     
@@ -68,7 +73,7 @@ deployment do
       exit
     end
     
-    puts %{[IMPORTANT:] Amazon EC2 images by default don't allow logins as root, therefore login as user "ubuntu" (for Ubuntu, see docs for other distributions).\nTo enable root login:\t
+    puts %{[IMPORTANT] Amazon EC2 images by default don't allow logins as root, therefore login as user "ubuntu" (for Ubuntu, see docs for other distributions).\nTo enable root login:\t
       \t(1) Login as default user
       \t(2) switch to root
       \t(3) remove the leading command-part in '/root/.ssh/authorized_keys' using an editor
