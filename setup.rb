@@ -1,4 +1,4 @@
-require 'base'
+require File.expand_path('../base', __FILE__)
 
 # Require all packages.
 Dir[File.join('packages', '**', '*.rb')].each do |package|

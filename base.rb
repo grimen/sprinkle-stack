@@ -30,7 +30,7 @@ module SprinkleStack
       end
     end
     
-    module Permisson
+    module Permission
       def has_permission(path, mod)
         @commands << "stat #{path} | grep 'Access: (#{mod}'"
       end
