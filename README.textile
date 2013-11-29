@@ -96,3 +96,5 @@ h2. License
 
 Released under the MIT license.
 Copyright (c) "Jonas Grimfelt":http://github.com/grimen
+
+!https://d2weczhvl823v0.cloudfront.net/grimen/sprinkle-stack/trend.png(Bitdeli Badge)!:https://bitdeli.com/free
