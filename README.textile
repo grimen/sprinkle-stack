@@ -73,6 +73,8 @@ $ sprinkle -c -s config/stack/setup.rb HOST
 
 ...where @HOST@ is the remote server's domain or IP.
 
+<em>Note:</em> This has now been replaced with an interactive prompt. Passing HOST is this fashion does nothing for now.
+
 h3. 5. Relax
 
 You will be queried a few options in the process, but other than that you are done.
